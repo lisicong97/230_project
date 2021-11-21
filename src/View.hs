@@ -8,6 +8,7 @@ import Text.Printf (printf)
 
 import Model
 import Model.Board
+import Model.Maze
 import Graphics.Vty hiding (dim)
 
 -------------------------------------------------------------------------------
@@ -16,23 +17,24 @@ view :: PlayState -> [Widget String]
 view s = [view' s]
 
 view' :: PlayState -> Widget String
-view' s = 
+view' s =
   withBorderStyle unicode $
     borderWithLabel (str (header s)) $
-      vTile [ mkRow s row | row <- [1..dim] ]
+      -- vTile [ mkRow s row | row <- [1..dim] ]
+      mazeWidge
 
 header :: PlayState -> String
-header s = printf "Tic-Tac-Toe Turn = %s, row = %d, col = %d" (show (psTurn s)) (pRow p) (pCol p)
-  where 
+header s = printf "Maze Turn = %s, row = %d, col = %d" (show (psTurn s)) (pRow p) (pCol p)
+  where
     p    = psPos s
 
 mkRow :: PlayState -> Int -> Widget n
 mkRow s row = hTile [ mkCell s row i | i <- [1..dim] ]
 
 mkCell :: PlayState -> Int -> Int -> Widget n
-mkCell s r c 
-  | isCurr s r c = withCursor raw 
-  | otherwise    = raw 
+mkCell s r c
+  | isCurr s r c = withCursor raw
+  | otherwise    = raw
   where
     raw = mkCell' s r c
 
@@ -42,7 +44,7 @@ withCursor = modifyDefAttr (`withStyle` reverseVideo)
 mkCell' :: PlayState -> Int -> Int -> Widget n
 -- mkCell' _ r c = center (str (printf "(%d, %d)" r c))
 mkCell' s r c = center (mkXO xoMb)
-  where 
+  where
     xoMb      = psBoard s ! Pos r c
     -- xoMb 
     --   | r == c    = Just X 
@@ -59,7 +61,7 @@ blockB = vBox (replicate 5 (str "     "))
 blockX = vBox [ str "X   X"
               , str " X X "
               , str "  X  "
-              , str " X X " 
+              , str " X X "
               , str "X   X"]
 blockO = vBox [ str "OOOOO"
               , str "O   O"

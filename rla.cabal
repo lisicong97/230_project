@@ -22,7 +22,8 @@ executable rla
                        Model, 
                        Model.Board,
                        Model.Score,
-                       Model.Player
+                       Model.Player,
+                       Model.Maze
 		       
   default-language:    Haskell2010
   ghc-options:       -W -threaded

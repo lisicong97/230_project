@@ -21,14 +21,21 @@ For every round of the game, a random maze would be generated. The player can pr
 
 
 **UPDATE**
+
 architecture: 
 There are 4 main components in our project - Maze, PlayState, Control, Zombies.
 Maze is the shape of the island, which including the logic of generating and drawing map of the island. We use '#' to represent block and ' ' to represent a passable way.
+
 PlayState is the structure of the process of the game, which including current score, current location of the user and information about the treasure.
 Control contains the logic about movement and gun shot using keyboard. To be more specific, the arrow key is to move the character (represented by '*') and the space key is to shoot the gun.
+
 Zombies includes the logic about the appearance and movement of the zombies. It includes a random function to put the zombies and the logic of chasing player. Due to the reason that we haven't finish it yet, there could be more details which is missing now.
+
 challenges:
+
 We did meet lots of problem when doing the code. The first challenge is that the document of Brick is not that detailed and there is not much information we could find with Google. Thanks to the demo of tic-tac-toe provided by professor, we implemented the drawing of the maze and the movement of player.
 Then, the record of the current state of the game is pretty inconvenient. We had to use parameter-passing to store the information of the map and character location. And there will be much more challenge when we start to code for gun and Zombies.
+
 about the goals:
+
 We believe we can meet most of the goal eventually. Until now, we have already finished the maze and the player. Two major thing left is the zombies and the shooting. We will try our best to finish them. But if we don't have enough time, we may omit the implementation of the shooting.

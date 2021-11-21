@@ -23,6 +23,7 @@ For every round of the game, a random maze would be generated. The player can pr
 **UPDATE**
 
 architecture: 
+
 There are 4 main components in our project - Maze, PlayState, Control, Zombies.
 Maze is the shape of the island, which including the logic of generating and drawing map of the island. We use '#' to represent block and ' ' to represent a passable way.
 

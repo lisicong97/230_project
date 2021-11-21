@@ -4,7 +4,11 @@ module Model.Maze
     MazeCoord,
     startLoction,
     maze0,
-    drawMazeWidget
+    drawMazeWidget,
+    up,
+    down,
+    left, 
+    right
   )
   where
 
@@ -15,6 +19,27 @@ data MazeCoord = MkMazeCoord
   , col :: Int  -- 1 <= pCol <= dim
   }
   deriving (Eq, Ord)
+
+
+up :: MazeCoord  -> [[Char ]] -> MazeCoord 
+up p maze = p 
+  { row = max 1 (row p - 1) 
+  } 
+
+down ::MazeCoord  -> [[Char ]] -> MazeCoord
+down p maze = p 
+  { row = min mazeDim (row p + 1) 
+  } 
+
+left ::MazeCoord  -> [[Char ]] -> MazeCoord
+left p maze = p 
+  { col   = max 1 (col p - 1) 
+  } 
+
+right ::MazeCoord  -> [[Char ]] -> MazeCoord
+right p maze = p 
+  { col = min mazeDim (col p + 1) 
+  }
 
 startLoction :: MazeCoord
 startLoction = MkMazeCoord 1 1
@@ -50,6 +75,10 @@ maze0 = [ "###########################"
         , "#### # # ######### # # ####"
         , "#      #     #     #      #"
         , "# ########## # ########## #"
+        , "#    #               #    #"
+        , "#### # ########### # # ####"
+        , "#      #     #     #      #"
+        , "# ########## # ###### #####"
         , "#                         #"
         , "###########################"
         ]

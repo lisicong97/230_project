@@ -21,10 +21,10 @@ view' s =
   withBorderStyle unicode $
     borderWithLabel (str (header s)) $
       -- vTile [ mkRow s row | row <- [1..dim] ]
-      drawMazeWidget maze0 startLoction
+      drawMazeWidget maze0 (playerLoc s)
 
 header :: PlayState -> String
-header s = printf "Maze Turn = %s, row = %d, col = %d" (show (psTurn s)) (pRow p) (pCol p)
+header s = printf "RLA row = %d, col = %d" (pRow p) (pCol p)
   where
     p    = psPos s
 
@@ -39,7 +39,8 @@ mkCell s r c
     raw = mkCell' s r c
 
 withCursor :: Widget n -> Widget n
-withCursor = modifyDefAttr (`withStyle` reverseVideo)
+withCursor = 
+  modifyDefAttr (`withStyle` reverseVideo)
 
 mkCell' :: PlayState -> Int -> Int -> Widget n
 -- mkCell' _ r c = center (str (printf "(%d, %d)" r c))

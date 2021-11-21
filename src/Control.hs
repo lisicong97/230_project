@@ -5,13 +5,10 @@ import qualified Graphics.Vty as V
 import qualified Brick.Types as T
 
 import Model
-    ( PlayState(psTurn, psPos, psBoard, psX, psO, psResult),
-      Tick(..),
-      next )
 import Model.Board
 import Control.Monad.IO.Class (MonadIO(liftIO))
 import Model.Player
--- import Model.Player 
+import Model.Maze
 
 -------------------------------------------------------------------------------
 
@@ -19,17 +16,18 @@ control :: PlayState -> BrickEvent n Tick -> EventM n (Next PlayState)
 control s ev = case ev of 
   AppEvent Tick                   -> nextS s =<< liftIO (play O s)
   T.VtyEvent (V.EvKey V.KEnter _) -> nextS s =<< liftIO (play X s)
-  T.VtyEvent (V.EvKey V.KUp   _)  -> Brick.continue (move up    s)
-  T.VtyEvent (V.EvKey V.KDown _)  -> Brick.continue (move down  s)
-  T.VtyEvent (V.EvKey V.KLeft _)  -> Brick.continue (move left  s)
-  T.VtyEvent (V.EvKey V.KRight _) -> Brick.continue (move right s)
+  T.VtyEvent (V.EvKey V.KUp   _)  -> Brick.continue (move Model.Maze.up s)
+  T.VtyEvent (V.EvKey V.KDown _)  -> Brick.continue (move Model.Maze.down s)
+  T.VtyEvent (V.EvKey V.KLeft _)  -> Brick.continue (move Model.Maze.left s)
+  T.VtyEvent (V.EvKey V.KRight _) -> Brick.continue (move Model.Maze.right s)
   T.VtyEvent (V.EvKey V.KEsc _)   -> Brick.halt s
   _                               -> Brick.continue s -- Brick.halt s
 
 -------------------------------------------------------------------------------
-move :: (Pos -> Pos) -> PlayState -> PlayState
+move :: (MazeCoord  -> [[Char ]] -> MazeCoord ) -> PlayState -> PlayState
 -------------------------------------------------------------------------------
-move f s = s { psPos = f (psPos s) }
+move f s= 
+  s { playerLoc = f (playerLoc s) maze0}
 
 -------------------------------------------------------------------------------
 play :: XO -> PlayState -> IO (Result Board)

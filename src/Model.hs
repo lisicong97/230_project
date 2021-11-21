@@ -49,9 +49,10 @@ init n = PS
   }
 
 isCurr :: PlayState -> Int -> Int -> Bool
-isCurr s r c = Board.pRow p == r && Board.pCol p == c
-  where 
-    p = psPos s 
+-- isCurr s r c = Board.pRow p == r && Board.pCol p == c
+--   where 
+--     p = psPos s 
+isCurr _ _ _ = True
 
 next :: PlayState -> Board.Result Board.Board -> Either (Board.Result ()) PlayState
 next s Board.Retry     = Right s

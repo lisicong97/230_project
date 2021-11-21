@@ -35,7 +35,9 @@ type Board = M.Map Pos XO
 
 data XO 
   = X 
-  | O
+  | O 
+  | M 
+  | T
   deriving (Eq, Show)
 
 data Pos = Pos 
@@ -50,8 +52,14 @@ board ! pos = M.lookup pos board
 dim :: Int
 dim = 3
 
+dimX :: Int
+dimX = 27
+
+dimY :: Int
+dimY = 27
+
 positions :: [Pos]
-positions = [ Pos r c | r <- [1..dim], c <- [1..dim] ] 
+positions = [ Pos r c | r <- [1..dimX], c <- [1..dimY] ] 
 
 emptyPositions :: Board -> [Pos]
 emptyPositions board  = [ p | p <- positions, M.notMember p board]
@@ -110,7 +118,7 @@ up p = p
 
 down :: Pos -> Pos
 down p = p 
-  { pRow = min dim (pRow p + 1) 
+  { pRow = min dimX (pRow p + 1) 
   } 
 
 left :: Pos -> Pos 
@@ -120,7 +128,7 @@ left p = p
 
 right :: Pos -> Pos 
 right p = p 
-  { pCol = min dim (pCol p + 1) 
+  { pCol = min dimY (pCol p + 1) 
   } 
 
 boardWinner :: Result a -> Maybe XO

@@ -21,7 +21,7 @@ view' s =
   withBorderStyle unicode $
     borderWithLabel (str (header s)) $
       -- vTile [ mkRow s row | row <- [1..dim] ]
-      mazeWidge
+      drawMazeWidget maze0 startLoction
 
 header :: PlayState -> String
 header s = printf "Maze Turn = %s, row = %d, col = %d" (show (psTurn s)) (pRow p) (pCol p)

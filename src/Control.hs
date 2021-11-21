@@ -5,6 +5,9 @@ import qualified Graphics.Vty as V
 import qualified Brick.Types as T
 
 import Model
+    ( PlayState(psTurn, psPos, psBoard, psX, psO, psResult),
+      Tick(..),
+      next )
 import Model.Board
 import Control.Monad.IO.Class (MonadIO(liftIO))
 import Model.Player

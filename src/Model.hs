@@ -5,6 +5,7 @@ import Prelude hiding ((!!))
 import qualified Model.Board  as Board
 import qualified Model.Score  as Score
 import qualified Model.Player as Player
+import qualified Model.Maze as Maze
 
 -------------------------------------------------------------------------------
 -- | Ticks mark passing of time: a custom event that we constantly stream
@@ -28,6 +29,9 @@ data PlayState = PS
   , psTurn   :: Board.XO        -- ^ whose turn 
   , psPos    :: Board.Pos       -- ^ current cursor
   , psResult :: Board.Result () -- ^ result      
+
+  , maze      :: [[Char]]
+  , playerLoc :: Maze.MazeCoord -- ^ current player location
   } 
 
 init :: Int -> PlayState
@@ -39,6 +43,9 @@ init n = PS
   , psTurn   = Board.X
   , psPos    = head Board.positions 
   , psResult = Board.Cont ()
+
+  , maze      = Maze.maze0
+  , playerLoc = Maze.startLoction 
   }
 
 isCurr :: PlayState -> Int -> Int -> Bool

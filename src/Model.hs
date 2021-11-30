@@ -6,6 +6,7 @@ import qualified Model.Board  as Board
 import qualified Model.Score  as Score
 import qualified Model.Player as Player
 import qualified Model.Maze as Maze
+import qualified Model.Zombie as Zombie
 import System.Random (StdGen)
 import Model.Maze (MazeCoord)
 import System.Random
@@ -38,6 +39,7 @@ data PlayState = PS
   , maze      :: [[Char]]
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   , treasureLocs :: [Maze.MazeCoord]
+  , zombieLocs :: [Maze.MazeCoord]
   } 
 
 init :: Int -> StdGen -> PlayState
@@ -50,12 +52,14 @@ init n seed1 = PS
   , psPos    = head Board.positions 
   , psResult = Board.Cont ()
 
-  , seed       = seed3
+  , seed       = seed4
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
+  , zombieLocs = zombies
   }
   where 
+        (seed4, zombies) = Zombie.initZombies seed3
         loc1 = allEmptyCells !! i1
         loc2 = allEmptyCells !! i2
         (i1, seed2) = randomR (0, length allEmptyCells - 1) seed1

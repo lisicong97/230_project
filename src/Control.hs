@@ -7,24 +7,29 @@ import qualified Brick.Types as T
 import Model
 import Model.Board
 import Control.Monad.IO.Class (MonadIO(liftIO))
+
 import Model.Player
 import Model.Maze
+import Data.Time.Clock
 import Data.List (tails)
 import System.Random (randomR)
--- import qualified Model.Maze as Maze
 
 -------------------------------------------------------------------------------
 
 control :: PlayState -> BrickEvent n Tick -> EventM n (Next PlayState)
-control s ev = case ev of
-  AppEvent Tick                   -> nextS s =<< liftIO (play O s)
-  T.VtyEvent (V.EvKey V.KEnter _) -> nextS s =<< liftIO (play X s)
+control s ev = case ev of 
+  AppEvent (Tick currentTime)     -> Brick.continue (zombieMove currentTime s)
   T.VtyEvent (V.EvKey V.KUp   _)  -> Brick.continue (move Model.Maze.up s)
   T.VtyEvent (V.EvKey V.KDown _)  -> Brick.continue (move Model.Maze.down s)
   T.VtyEvent (V.EvKey V.KLeft _)  -> Brick.continue (move Model.Maze.left s)
   T.VtyEvent (V.EvKey V.KRight _) -> Brick.continue (move Model.Maze.right s)
   T.VtyEvent (V.EvKey V.KEsc _)   -> Brick.halt s
   _                               -> Brick.continue s -- Brick.halt s
+
+zombieMove :: UTCTime -> PlayState -> PlayState 
+zombieMove t s = if (floor $ nominalDiffTimeToSeconds $ diffUTCTime t (time s)) >= 1
+                  then move Model.Maze.down s { time = t}
+                  else s
 
 -------------------------------------------------------------------------------
 move :: (MazeCoord -> [[Char]] -> MazeCoord ) -> PlayState -> PlayState
@@ -55,6 +60,7 @@ move f s
       ty1 = getLocY (head (treasureLocs ps))
       tx2 = getLocX ((treasureLocs ps) !! 1)
       ty2 = getLocY ((treasureLocs ps) !! 1)
+      
       
 
 -------------------------------------------------------------------------------

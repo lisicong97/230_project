@@ -6,15 +6,18 @@ import qualified Model.Board  as Board
 import qualified Model.Score  as Score
 import qualified Model.Player as Player
 import qualified Model.Maze as Maze
+import qualified Model.Zombie as Zombie
 import System.Random (StdGen)
 import Model.Maze (MazeCoord)
 import System.Random
+import Data.Time.Clock
 
 
 -------------------------------------------------------------------------------
 -- | Ticks mark passing of time: a custom event that we constantly stream
 -------------------------------------------------------------------------------
-data Tick = Tick
+-- data Tick = Tick
+data Tick = Tick UTCTime
 
 -------------------------------------------------------------------------------
 -- | Top-level App State ------------------------------------------------------
@@ -39,10 +42,13 @@ data PlayState = PS
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   , treasureLocs :: [Maze.MazeCoord]
   , score :: Int
+  , zombieLocs :: [Maze.MazeCoord]
+
+  , time :: UTCTime
   } 
 
-init :: Int -> StdGen -> PlayState
-init n seed1 = PS 
+init :: Int -> StdGen -> UTCTime -> PlayState
+init n seed1 t = PS 
   { psX      = Player.human
   , psO      = Player.rando
   , psScore  = Score.init n
@@ -51,13 +57,17 @@ init n seed1 = PS
   , psPos    = head Board.positions 
   , psResult = Board.Cont ()
 
-  , seed       = seed3
+  , seed       = seed4
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
   , score = 0
+  , zombieLocs = zombies
+
+  , time = t
   }
   where 
+        (seed4, zombies) = Zombie.initZombies seed3
         loc1 = allEmptyCells !! i1
         loc2 = allEmptyCells !! i2
         (i1, seed2) = randomR (0, length allEmptyCells - 1) seed1

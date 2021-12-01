@@ -15,7 +15,8 @@ executable rla
                        random >=1.1 && <1.2,
                        containers,
                        vty, 
-                       brick
+                       brick,
+                       time
   hs-source-dirs:      src
   other-modules:       View, 
                        Control,
@@ -24,6 +25,7 @@ executable rla
                        Model.Score,
                        Model.Player,
                        Model.Maze
+                       Model.Zombie
 		       
   default-language:    Haskell2010
   ghc-options:       -W -threaded

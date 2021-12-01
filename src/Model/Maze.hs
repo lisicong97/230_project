@@ -19,7 +19,7 @@ module Model.Maze
   where
 
 import Brick
-import System.Random
+
 
 data MazeCoord = MkMazeCoord
   { row :: Int  -- 1 <= pRow <= dim 

@@ -41,7 +41,7 @@ data PlayState = PS
   } 
 
 init :: Int -> StdGen -> PlayState
-init n seed = PS 
+init n seed1 = PS 
   { psX      = Player.human
   , psO      = Player.rando
   , psScore  = Score.init n
@@ -50,7 +50,7 @@ init n seed = PS
   , psPos    = head Board.positions 
   , psResult = Board.Cont ()
 
-  , seed       = seed
+  , seed       = seed3
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
@@ -58,8 +58,8 @@ init n seed = PS
   where 
         loc1 = allEmptyCells !! i1
         loc2 = allEmptyCells !! i2
-        (i1, newSeed) = randomR (0, length allEmptyCells - 1) seed
-        (i2, _) = randomR (0, length allEmptyCells - 1) newSeed
+        (i1, seed2) = randomR (0, length allEmptyCells - 1) seed1
+        (i2, seed3) = randomR (0, length allEmptyCells - 1) seed2
         allEmptyCells = Maze.emptyCell Maze.maze0  Maze.startLoction
 
 

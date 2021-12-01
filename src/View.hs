@@ -9,6 +9,7 @@ import Text.Printf (printf)
 import Model
 import Model.Board
 import Model.Maze
+import Model.Zombie
 import Graphics.Vty hiding (dim)
 
 -------------------------------------------------------------------------------
@@ -21,7 +22,7 @@ view' s =
   withBorderStyle unicode $
     borderWithLabel (str (header s)) $
       -- vTile [ mkRow s row | row <- [1..dim] ]
-      drawMazeWidget maze0 (playerLoc s) (treasureLocs s)
+      drawMazeWidget maze0 (playerLoc s) (treasureLocs s) (zombieLocs s)
 
 header :: PlayState -> String
 header s = printf "RLA row = %d, col = %d" (pRow p) (pCol p)

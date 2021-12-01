@@ -38,6 +38,7 @@ data PlayState = PS
   , maze      :: [[Char]]
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   , treasureLocs :: [Maze.MazeCoord]
+  , score :: Int
   } 
 
 init :: Int -> StdGen -> PlayState
@@ -54,6 +55,7 @@ init n seed1 = PS
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
+  , score = 0
   }
   where 
         loc1 = allEmptyCells !! i1

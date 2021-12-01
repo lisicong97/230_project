@@ -6,6 +6,8 @@ import qualified Model.Board  as Board
 import qualified Model.Score  as Score
 import qualified Model.Player as Player
 import qualified Model.Maze as Maze
+import System.Random (StdGen)
+
 
 -------------------------------------------------------------------------------
 -- | Ticks mark passing of time: a custom event that we constantly stream
@@ -30,12 +32,13 @@ data PlayState = PS
   , psPos    :: Board.Pos       -- ^ current cursor
   , psResult :: Board.Result () -- ^ result      
 
+  , seed      :: StdGen
   , maze      :: [[Char]]
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   } 
 
-init :: Int -> PlayState
-init n = PS 
+init :: Int ->StdGen -> PlayState
+init n g = PS 
   { psX      = Player.human
   , psO      = Player.rando
   , psScore  = Score.init n
@@ -44,6 +47,7 @@ init n = PS
   , psPos    = head Board.positions 
   , psResult = Board.Cont ()
 
+  , seed       = g
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction 
   }

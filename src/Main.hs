@@ -13,6 +13,7 @@ import Control
 import System.Environment (getArgs)
 import Text.Read (readMaybe)
 import Data.Maybe (fromMaybe)
+import System.Random
 
 -------------------------------------------------------------------------------
 main :: IO ()
@@ -24,7 +25,8 @@ main = do
     threadDelay 100000 -- decides how fast your game moves
   let buildVty = V.mkVty V.defaultConfig
   initialVty <- buildVty
-  res <- customMain initialVty buildVty (Just chan) app (Model.init rounds)
+  seed <- getStdGen
+  res <- customMain initialVty buildVty (Just chan) app (Model.init rounds seed)
   print (psResult res, psScore res) 
 
 app :: App PlayState Tick String

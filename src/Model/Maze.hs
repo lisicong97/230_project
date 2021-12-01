@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE ParallelListComp #-}
 module Model.Maze
   (
     MazeCoord,
@@ -7,12 +8,20 @@ module Model.Maze
     drawMazeWidget,
     up,
     down,
-    left, 
-    right
+    left,
+    right,
+    mazeDim,
+    Treasure,
+    emptyCell,
+    -- selectRandomTreasure,
+    -- initTreasure
   )
   where
 
 import Brick
+import System.Random
+import Control.Monad.IO.Class (MonadIO(liftIO))
+import qualified Data.Set as S
 
 data MazeCoord = MkMazeCoord
   { row :: Int  -- 1 <= pRow <= dim 
@@ -21,9 +30,9 @@ data MazeCoord = MkMazeCoord
   deriving (Eq, Ord)
 
 
-up :: MazeCoord  -> [[Char ]] -> MazeCoord 
+up :: MazeCoord  -> [[Char ]] -> MazeCoord
 up p maze = if (maze !! (row p - 1) !! (col p) == '#') then p
-else p{ row = max 1 (row p - 1) } 
+else p{ row = max 1 (row p - 1) }
 
 down ::MazeCoord  -> [[Char ]] -> MazeCoord
 down p maze = if (maze !! (row p + 1) !! (col p) == '#') then p
@@ -41,12 +50,32 @@ else p{ col = min mazeDim (col p + 1)}
 startLoction :: MazeCoord
 startLoction = MkMazeCoord 1 1
 
-drawMazeWidget :: [[Char]] -> MazeCoord -> Widget n
-drawMazeWidget maze (MkMazeCoord x y) =
-    vBox [ hBox [ if (r == x) && (c == y) then str "*" else str [(maze !! r) !! c] | c <- [0..(mazeDim-1)]] |  r <- [0..(mazeDim-1)] ]
+drawMazeWidget :: [[Char]] -> MazeCoord -> StdGen -> Widget n
+drawMazeWidget maze (MkMazeCoord x y) seed =
+    vBox [ hBox [ if (r == x) && (c == y)
+      then str "*"
+      -- else str [(maze !! r) !! c] 
+      else (
+        if (r == tx) && (c == ty)
+          then str "O"
+          else str [(maze !! r) !! c]
+      )
+      | c <- [0..(mazeDim-1)]] |  r <- [0..(mazeDim-1)] ]
+      where MkMazeCoord tx ty = allEmptyCells !! i
+            (i, _) = randomR (0, length allEmptyCells - 1) seed
+            allEmptyCells = emptyCell maze  (MkMazeCoord x y)
+
+
 
 mazeDim :: Int
 mazeDim = 27
+
+type Treasure = [[Char]]     -- ^ maze
+              -> MazeCoord   -- ^ player location
+              -> IO MazeCoord  -- ^ treasure location]
+
+emptyCell :: [[Char]] -> MazeCoord -> [MazeCoord]
+emptyCell maze (MkMazeCoord x y) = [ MkMazeCoord r c | c <- [0..(mazeDim-1)], r <- [0..(mazeDim-1)] , ((maze !! r) !! c) == ' ' ]
 
 
 

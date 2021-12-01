@@ -21,7 +21,7 @@ view' s =
   withBorderStyle unicode $
     borderWithLabel (str (header s)) $
       -- vTile [ mkRow s row | row <- [1..dim] ]
-      drawMazeWidget maze0 (playerLoc s)
+      drawMazeWidget maze0 (playerLoc s) (seed s)
 
 header :: PlayState -> String
 header s = printf "RLA row = %d, col = %d" (pRow p) (pCol p)

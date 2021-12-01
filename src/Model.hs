@@ -41,6 +41,7 @@ data PlayState = PS
   , maze      :: [[Char]]
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   , treasureLocs :: [Maze.MazeCoord]
+  , score :: Int
   , zombieLocs :: [Maze.MazeCoord]
 
   , time :: UTCTime
@@ -60,6 +61,7 @@ init n seed1 t = PS
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
+  , score = 0
   , zombieLocs = zombies
 
   , time = t

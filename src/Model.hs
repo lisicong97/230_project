@@ -9,12 +9,14 @@ import qualified Model.Maze as Maze
 import System.Random (StdGen)
 import Model.Maze (MazeCoord)
 import System.Random
+import Data.Time.Clock
 
 
 -------------------------------------------------------------------------------
 -- | Ticks mark passing of time: a custom event that we constantly stream
 -------------------------------------------------------------------------------
-data Tick = Tick
+-- data Tick = Tick
+data Tick = Tick UTCTime
 
 -------------------------------------------------------------------------------
 -- | Top-level App State ------------------------------------------------------

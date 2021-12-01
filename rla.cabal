@@ -15,7 +15,8 @@ executable rla
                        random >=1.1 && <1.2,
                        containers,
                        vty, 
-                       brick
+                       brick,
+                       time
   hs-source-dirs:      src
   other-modules:       View, 
                        Control,

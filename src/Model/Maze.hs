@@ -13,15 +13,11 @@ module Model.Maze
     mazeDim,
     Treasure,
     emptyCell,
-    -- selectRandomTreasure,
-    -- initTreasure
   )
   where
 
 import Brick
 import System.Random
-import Control.Monad.IO.Class (MonadIO(liftIO))
-import qualified Data.Set as S
 
 data MazeCoord = MkMazeCoord
   { row :: Int  -- 1 <= pRow <= dim 
@@ -30,22 +26,30 @@ data MazeCoord = MkMazeCoord
   deriving (Eq, Ord)
 
 
-up :: MazeCoord  -> [[Char ]] -> MazeCoord
-up p maze = if (maze !! (row p - 1) !! (col p) == '#') then p
-else p{ row = max 1 (row p - 1) }
+up :: MazeCoord  -> [[Char ]] -> MazeCoord 
+up p maze = if maze !! (row p - 1) !! col p == '#' then
+  p
+else
+  p{ row = max 1 (row p - 1) } 
 
 down ::MazeCoord  -> [[Char ]] -> MazeCoord
-down p maze = if (maze !! (row p + 1) !! (col p) == '#') then p
-else p{ row = min mazeDim (row p + 1) }
+down p maze = if maze !! (row p + 1) !! col p == '#' then
+  p
+else 
+  p{ row = min mazeDim (row p + 1) }
 
 
 left ::MazeCoord  -> [[Char ]] -> MazeCoord
-left p maze = if (maze !! (row p) !! (col p - 1) == '#') then p
-else p{ col = max 1 (col p - 1) }
+left p maze = if maze !! row p !! (col p - 1) == '#' then
+  p
+else
+  p{ col = max 1 (col p - 1) }
 
 right ::MazeCoord  -> [[Char ]] -> MazeCoord
-right p maze = if (maze !! (row p) !! (col p + 1) == '#') then p
-else p{ col = min mazeDim (col p + 1)}
+right p maze = if maze !! row p !! (col p + 1) == '#' then
+  p
+else
+  p{ col = min mazeDim (col p + 1)}
 
 startLoction :: MazeCoord
 startLoction = MkMazeCoord 1 1

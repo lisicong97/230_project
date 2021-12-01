@@ -40,20 +40,20 @@ up p maze = if maze !! (row p - 1) !! col p == '#' then
 else
   p{ row = max 1 (row p - 1) }
 
-down ::MazeCoord  -> [[Char ]] -> MazeCoord
+down ::MazeCoord  -> [String] -> MazeCoord
 down p maze = if maze !! (row p + 1) !! col p == '#' then
   p
 else
   p{ row = min mazeDim (row p + 1) }
 
 
-left ::MazeCoord  -> [[Char ]] -> MazeCoord
+left ::MazeCoord  -> [String] -> MazeCoord
 left p maze = if maze !! row p !! (col p - 1) == '#' then
   p
 else
   p{ col = max 1 (col p - 1) }
 
-right ::MazeCoord  -> [[Char ]] -> MazeCoord
+right ::MazeCoord  -> [String] -> MazeCoord
 right p maze = if maze !! row p !! (col p + 1) == '#' then
   p
 else
@@ -86,14 +86,15 @@ judgeExistThing ((MkMazeCoord x y) : coords) r c = if (r==x) && (c==y) then
                                                     else
                                                         judgeExistThing coords r c
 
+
 mazeDim :: Int
 mazeDim = 27
 
-emptyCell :: [[Char]] -> MazeCoord -> [MazeCoord]
-emptyCell maze (MkMazeCoord x y) = [ MkMazeCoord r c | c <- [0..(mazeDim-1)], r <- [0..(mazeDim-1)] , ((maze !! r) !! c) == ' ' ]
+emptyCell :: [String] -> MazeCoord -> [MazeCoord]
+emptyCell maze (MkMazeCoord x y) = [ MkMazeCoord r c | c <- [0..(mazeDim-1)], r <- [0..(mazeDim-1)] , (maze !! r) !! c == ' ' ]
 
 genLoc :: Int -> Int -> MazeCoord
-genLoc x y = MkMazeCoord x y
+genLoc = MkMazeCoord
 
 getLocX :: MazeCoord -> Int
 getLocX (MkMazeCoord x _) = x
@@ -101,7 +102,7 @@ getLocX (MkMazeCoord x _) = x
 getLocY :: MazeCoord -> Int
 getLocY (MkMazeCoord _ y) = y
 
-maze0 :: [[Char]]
+maze0 :: [String]
 maze0 = [ "###########################"
         , "#            #            #"
         , "# #### ##### # ##### #### #"

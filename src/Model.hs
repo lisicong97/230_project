@@ -10,12 +10,14 @@ import qualified Model.Zombie as Zombie
 import System.Random (StdGen)
 import Model.Maze (MazeCoord)
 import System.Random
+import Data.Time.Clock
 
 
 -------------------------------------------------------------------------------
 -- | Ticks mark passing of time: a custom event that we constantly stream
 -------------------------------------------------------------------------------
-data Tick = Tick
+-- data Tick = Tick
+data Tick = Tick UTCTime
 
 -------------------------------------------------------------------------------
 -- | Top-level App State ------------------------------------------------------
@@ -39,12 +41,18 @@ data PlayState = PS
   , maze      :: [[Char]]
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   , treasureLocs :: [Maze.MazeCoord]
+  , score :: Int
   , zombieLocs :: [Maze.MazeCoord]
+<<<<<<< HEAD
   , zombieDirects :: [Int] -- ^ 0=up, 1=down, 2=left, 3=right
+=======
+
+  , time :: UTCTime
+>>>>>>> 570e7e169139b6533ddd08c52ade29d7454a0ab6
   } 
 
-init :: Int -> StdGen -> PlayState
-init n seed1 = PS 
+init :: Int -> StdGen -> UTCTime -> PlayState
+init n seed1 t = PS 
   { psX      = Player.human
   , psO      = Player.rando
   , psScore  = Score.init n
@@ -57,8 +65,14 @@ init n seed1 = PS
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
+  , score = 0
   , zombieLocs = zombies
+<<<<<<< HEAD
   , zombieDirects = dirs
+=======
+
+  , time = t
+>>>>>>> 570e7e169139b6533ddd08c52ade29d7454a0ab6
   }
   where 
         (seed5, dirs) = Zombie.initDirects seed4 zombies 

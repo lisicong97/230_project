@@ -18,13 +18,6 @@ import qualified Model.Maze as Maze
 zombieNum :: Int
 zombieNum = 8
 
-
-
-getRandomZombie :: [[Int]] -> IO [Int]
-getRandomZombie cells = do
-  i <- randomRIO (0, length cells - 1)
-  return (cells !! i)
-
 initZombies :: StdGen -> (StdGen, [Maze.MazeCoord])
 initZombies seed = getZombieLocs seed []
 

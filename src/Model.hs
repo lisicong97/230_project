@@ -1,12 +1,14 @@
 {-# LANGUAGE RecordWildCards #-}
 module Model where 
 
-import Prelude hiding ((!!))
+import Prelude
 import qualified Model.Board  as Board
 import qualified Model.Score  as Score
 import qualified Model.Player as Player
 import qualified Model.Maze as Maze
 import System.Random (StdGen)
+import Model.Maze (MazeCoord)
+import System.Random
 
 
 -------------------------------------------------------------------------------
@@ -35,10 +37,11 @@ data PlayState = PS
   , seed      :: StdGen
   , maze      :: [[Char]]
   , playerLoc :: Maze.MazeCoord -- ^ current player location
+  , treasureLocs :: [Maze.MazeCoord]
   } 
 
-init :: Int ->StdGen -> PlayState
-init n g = PS 
+init :: Int -> StdGen -> PlayState
+init n seed = PS 
   { psX      = Player.human
   , psO      = Player.rando
   , psScore  = Score.init n
@@ -47,10 +50,18 @@ init n g = PS
   , psPos    = head Board.positions 
   , psResult = Board.Cont ()
 
-  , seed       = g
+  , seed       = seed
   , maze      = Maze.maze0
-  , playerLoc = Maze.startLoction 
+  , playerLoc = Maze.startLoction
+  , treasureLocs = [loc1, loc2]
   }
+  where 
+        loc1 = allEmptyCells !! i1
+        loc2 = allEmptyCells !! i2
+        (i1, newSeed) = randomR (0, length allEmptyCells - 1) seed
+        (i2, _) = randomR (0, length allEmptyCells - 1) newSeed
+        allEmptyCells = Maze.emptyCell Maze.maze0  Maze.startLoction
+
 
 isCurr :: PlayState -> Int -> Int -> Bool
 -- isCurr s r c = Board.pRow p == r && Board.pCol p == c

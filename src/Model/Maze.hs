@@ -11,8 +11,10 @@ module Model.Maze
     left,
     right,
     mazeDim,
-    Treasure,
     emptyCell,
+    genLoc,
+    getLocX,
+    getLocY
   )
   where
 
@@ -26,16 +28,16 @@ data MazeCoord = MkMazeCoord
   deriving (Eq, Ord)
 
 
-up :: MazeCoord  -> [[Char ]] -> MazeCoord 
+up :: MazeCoord  -> [[Char ]] -> MazeCoord
 up p maze = if maze !! (row p - 1) !! col p == '#' then
   p
 else
-  p{ row = max 1 (row p - 1) } 
+  p{ row = max 1 (row p - 1) }
 
 down ::MazeCoord  -> [[Char ]] -> MazeCoord
 down p maze = if maze !! (row p + 1) !! col p == '#' then
   p
-else 
+else
   p{ row = min mazeDim (row p + 1) }
 
 
@@ -54,34 +56,35 @@ else
 startLoction :: MazeCoord
 startLoction = MkMazeCoord 1 1
 
-drawMazeWidget :: [[Char]] -> MazeCoord -> StdGen -> Widget n
-drawMazeWidget maze (MkMazeCoord x y) seed =
+drawMazeWidget :: [[Char]] -> MazeCoord -> [MazeCoord] -> Widget n
+drawMazeWidget maze (MkMazeCoord x y) treasureLocs =
     vBox [ hBox [ if (r == x) && (c == y)
       then str "*"
-      -- else str [(maze !! r) !! c] 
       else (
-        if (r == tx) && (c == ty)
+        if (r == tx1) && (c == ty1) || (r == tx2) && (c == ty2)
           then str "O"
           else str [(maze !! r) !! c]
       )
       | c <- [0..(mazeDim-1)]] |  r <- [0..(mazeDim-1)] ]
-      where MkMazeCoord tx ty = allEmptyCells !! i
-            (i, _) = randomR (0, length allEmptyCells - 1) seed
-            allEmptyCells = emptyCell maze  (MkMazeCoord x y)
+      where MkMazeCoord tx1 ty1 = treasureLocs !! 0
+            MkMazeCoord tx2 ty2 = treasureLocs !! 1
 
 
 
 mazeDim :: Int
 mazeDim = 27
 
-type Treasure = [[Char]]     -- ^ maze
-              -> MazeCoord   -- ^ player location
-              -> IO MazeCoord  -- ^ treasure location]
-
 emptyCell :: [[Char]] -> MazeCoord -> [MazeCoord]
 emptyCell maze (MkMazeCoord x y) = [ MkMazeCoord r c | c <- [0..(mazeDim-1)], r <- [0..(mazeDim-1)] , ((maze !! r) !! c) == ' ' ]
 
+genLoc :: Int -> Int -> MazeCoord
+genLoc x y = MkMazeCoord x y
 
+getLocX :: MazeCoord -> Int
+getLocX (MkMazeCoord x _) = x
+
+getLocY :: MazeCoord -> Int
+getLocY (MkMazeCoord _ y) = y
 
 maze0 :: [[Char]]
 maze0 = [ "###########################"

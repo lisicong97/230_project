@@ -26,7 +26,7 @@ main = do
   let buildVty = V.mkVty V.defaultConfig
   initialVty <- buildVty
   seed <- getStdGen
-  res <- customMain initialVty buildVty (Just chan) app (Model.init rounds seed)
+  res <- customMain initialVty buildVty (Just chan) app (Model.init rounds seed )
   print (psResult res, psScore res) 
 
 app :: App PlayState Tick String

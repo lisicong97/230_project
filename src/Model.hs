@@ -40,6 +40,7 @@ data PlayState = PS
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   , treasureLocs :: [Maze.MazeCoord]
   , zombieLocs :: [Maze.MazeCoord]
+  , zombieDirects :: [Int] -- ^ 0=up, 1=down, 2=left, 3=right
   } 
 
 init :: Int -> StdGen -> PlayState
@@ -52,13 +53,15 @@ init n seed1 = PS
   , psPos    = head Board.positions 
   , psResult = Board.Cont ()
 
-  , seed       = seed4
+  , seed       = seed5
   , maze      = Maze.maze0
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
   , zombieLocs = zombies
+  , zombieDirects = dirs
   }
   where 
+        (seed5, dirs) = Zombie.initDirects seed4 zombies 
         (seed4, zombies) = Zombie.initZombies seed3
         loc1 = allEmptyCells !! i1
         loc2 = allEmptyCells !! i2

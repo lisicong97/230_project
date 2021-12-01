@@ -9,6 +9,7 @@ import Model.Board
 import Control.Monad.IO.Class (MonadIO(liftIO))
 import Model.Player
 import Model.Maze
+import Model.Zombie
 
 -------------------------------------------------------------------------------
 
@@ -49,5 +50,24 @@ nextS :: PlayState -> Result Board -> EventM n (Next PlayState)
 nextS s b = case next s b of
   Right s' -> continue s'
   Left res -> halt (s { psResult = res }) 
+
+
+-- -------------------------------------------------------------------------------
+-- zombieSingleMove :: Int -> (MazeCoord  -> [[Char ]] -> MazeCoord ) -> PlayState -> PlayState
+-- -------------------------------------------------------------------------------
+-- zombieSingleMove id f s = 
+--   s { zombieLocs = modifySingleLoc f (zombieLocs s) [] id}
+
+
+-- modifySingleLoc :: (MazeCoord  -> [[Char ]] -> MazeCoord ) -> [MazeCoord] -> [MazeCoord] -> Int -> [MazeCoord]
+-- modifySingleLoc _ [] cur _ = cur
+-- modifySingleLoc f (c : cs) cur id = if length cur == id 
+--                                       then (cur' ++ cs)
+--                                       where
+--                                         cur' = cur ++ c'
+--                                         c' = f c maze0
+--                                     else
+--                                       modifySingleLoc f cs (cur++c) id
+
 
 

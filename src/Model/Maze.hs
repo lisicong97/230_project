@@ -5,6 +5,7 @@ module Model.Maze
     MazeCoord,
     startLoction,
     maze0,
+    mazeDim,
     drawMazeWidget,
     up,
     down,
@@ -14,11 +15,16 @@ module Model.Maze
     emptyCell,
     genLoc,
     getLocX,
-    getLocY
+    getLocY,
+    zombieUp,
+    zombieDown,
+    zombieLeft,
+    zombieRight,
   )
   where
 
 import Brick
+import System.Random
 
 
 data MazeCoord = MkMazeCoord
@@ -124,3 +130,30 @@ maze0 = [ "###########################"
         , "#                         #"
         , "###########################"
         ]
+
+
+zombieUp :: MazeCoord  -> [[Char ]] -> MazeCoord
+zombieUp p maze = if maze !! (row p - 1) !! col p == '#' then
+  p
+else
+  p{ row = max 1 (row p - 1) }
+
+zombieDown ::MazeCoord  -> [[Char ]] -> MazeCoord
+zombieDown p maze = if maze !! (row p + 1) !! col p == '#' then
+  p
+else
+  p{ row = min mazeDim (row p + 1) }
+
+
+zombieLeft ::MazeCoord  -> [[Char ]] -> MazeCoord
+zombieLeft p maze = if maze !! row p !! (col p - 1) == '#' then
+  p
+else
+  p{ col = max 1 (col p - 1) }
+
+zombieRight ::MazeCoord  -> [[Char ]] -> MazeCoord
+zombieRight p maze = if maze !! row p !! (col p + 1) == '#' then
+  p
+else
+  p{ col = min mazeDim (col p + 1)}
+

@@ -42,10 +42,12 @@ data PlayState = PS
   , playerLoc :: Maze.MazeCoord -- ^ current player location
   , treasureLocs :: [Maze.MazeCoord]
   , zombieLocs :: [Maze.MazeCoord]
+
+  , time :: UTCTime
   } 
 
-init :: Int -> StdGen -> PlayState
-init n seed1 = PS 
+init :: Int -> StdGen -> UTCTime -> PlayState
+init n seed1 t = PS 
   { psX      = Player.human
   , psO      = Player.rando
   , psScore  = Score.init n
@@ -59,6 +61,8 @@ init n seed1 = PS
   , playerLoc = Maze.startLoction
   , treasureLocs = [loc1, loc2]
   , zombieLocs = zombies
+
+  , time = t
   }
   where 
         (seed4, zombies) = Zombie.initZombies seed3

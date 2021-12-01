@@ -25,7 +25,7 @@ view' s =
       drawMazeWidget maze0 (playerLoc s) (treasureLocs s) (zombieLocs s)
 
 header :: PlayState -> String
-header s = printf "RLA row = %d, col = %d" (pRow p) (pCol p)
+header s = printf "RLA YOUR SCORE = %d" (score s)
   where
     p    = psPos s
 

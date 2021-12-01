@@ -43,12 +43,9 @@ data PlayState = PS
   , treasureLocs :: [Maze.MazeCoord]
   , score :: Int
   , zombieLocs :: [Maze.MazeCoord]
-<<<<<<< HEAD
   , zombieDirects :: [Int] -- ^ 0=up, 1=down, 2=left, 3=right
-=======
 
   , time :: UTCTime
->>>>>>> 570e7e169139b6533ddd08c52ade29d7454a0ab6
   } 
 
 init :: Int -> StdGen -> UTCTime -> PlayState
@@ -67,12 +64,9 @@ init n seed1 t = PS
   , treasureLocs = [loc1, loc2]
   , score = 0
   , zombieLocs = zombies
-<<<<<<< HEAD
   , zombieDirects = dirs
-=======
 
   , time = t
->>>>>>> 570e7e169139b6533ddd08c52ade29d7454a0ab6
   }
   where 
         (seed5, dirs) = Zombie.initDirects seed4 zombies 

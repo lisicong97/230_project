@@ -10,19 +10,15 @@ import Control.Monad.IO.Class (MonadIO(liftIO))
 
 import Model.Player
 import Model.Maze
-<<<<<<< HEAD
 import Model.Zombie
-=======
 import Data.Time.Clock
 import Data.List (tails)
 import System.Random (randomR)
->>>>>>> 570e7e169139b6533ddd08c52ade29d7454a0ab6
-
 -------------------------------------------------------------------------------
 
 control :: PlayState -> BrickEvent n Tick -> EventM n (Next PlayState)
 control s ev = case ev of 
-  AppEvent (Tick currentTime)     -> Brick.continue (zombieMove currentTime s)
+  AppEvent (Tick currentTime)     -> Brick.continue (autoMove currentTime s)
   T.VtyEvent (V.EvKey V.KUp   _)  -> Brick.continue (move Model.Maze.up s)
   T.VtyEvent (V.EvKey V.KDown _)  -> Brick.continue (move Model.Maze.down s)
   T.VtyEvent (V.EvKey V.KLeft _)  -> Brick.continue (move Model.Maze.left s)
@@ -30,10 +26,13 @@ control s ev = case ev of
   T.VtyEvent (V.EvKey V.KEsc _)   -> Brick.halt s
   _                               -> Brick.continue s -- Brick.halt s
 
-zombieMove :: UTCTime -> PlayState -> PlayState 
-zombieMove t s = if floor ( nominalDiffTimeToSeconds $ diffUTCTime t (time s)) >= 1
-                  then move Model.Maze.down s { time = t}
+autoMove :: UTCTime -> PlayState -> PlayState 
+autoMove t s = if floor ( nominalDiffTimeToSeconds $ diffUTCTime t (time s)) >= 1
+                  then s { time = t, seed = seed1, zombieLocs = newZombieLocs, zombieDirects = newZombieDirects}
                   else s
+                  where 
+                    (seed1, newZombieDirects) = updateDirects (seed s) (zombieLocs s) (zombieDirects s) []
+                    newZombieLocs = zombiesMove newZombieDirects (zombieLocs s) []
 
 -------------------------------------------------------------------------------
 move :: (MazeCoord -> [[Char]] -> MazeCoord ) -> PlayState -> PlayState

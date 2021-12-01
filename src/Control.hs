@@ -23,7 +23,7 @@ control s ev = case ev of
   _                               -> Brick.continue s -- Brick.halt s
 
 zombieMove :: UTCTime -> PlayState -> PlayState 
-zombieMove t s = if (floor $ nominalDiffTimeToSeconds $ diffUTCTime t (time s)) >= 1
+zombieMove t s = if floor ( nominalDiffTimeToSeconds $ diffUTCTime t (time s)) >= 1
                   then move Model.Maze.down s { time = t}
                   else s
 

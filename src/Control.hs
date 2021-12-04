@@ -69,7 +69,7 @@ move f s
   , treasureLocs = [loc1, (treasureLocs ps) !! 1]
   , seed = seed2
   }
-  | meetZombie s =
+  | meetZombie ps =
   ps {
     dead = True
   }

@@ -46,6 +46,8 @@ data PlayState = PS
   , zombieDirects :: [Int] -- ^ 0=up, 1=down, 2=left, 3=right
 
   , time :: UTCTime
+
+  , dead :: Bool
   } 
 
 init :: Int -> StdGen -> UTCTime -> PlayState
@@ -67,6 +69,8 @@ init n seed1 t = PS
   , zombieDirects = dirs
 
   , time = t
+  
+  , dead = False
   }
   where 
         (seed5, dirs) = Zombie.initDirects seed4 zombies 

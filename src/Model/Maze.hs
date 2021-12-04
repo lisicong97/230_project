@@ -20,11 +20,13 @@ module Model.Maze
     zombieDown,
     zombieLeft,
     zombieRight,
+    mazeAttrMap
   )
   where
 
 import Brick
 import System.Random
+import qualified Graphics.Vty as V
 
 
 data MazeCoord = MkMazeCoord
@@ -65,14 +67,17 @@ startLoction = MkMazeCoord 1 1
 drawMazeWidget :: [[Char]] -> MazeCoord -> [MazeCoord] -> [MazeCoord] -> Widget n
 drawMazeWidget maze (MkMazeCoord x y) treasureLocs zombieLocs =
     vBox [ hBox [ if (r == x) && (c == y)
-      then str "*"
+      then withAttr (attrName "player") (str "*")
       else (
         if judgeExistThing zombieLocs r c
-          then str "&"
+          then withAttr (attrName "zombie") (str "&")
           else (
             if (r == tx1) && (c == ty1) || (r == tx2) && (c == ty2)
-            then str "O"
-            else str [(maze !! r) !! c]
+            then withAttr (attrName "treasure") (str "★")
+            -- then withAttr (attrName "treasure") (str "$")
+            else if [(maze !! r) !! c] == "#"
+                  then withAttr (attrName "wall") (str " ")
+                  else withAttr (attrName "path") (str " ")
             )
       )
       | c <- [0..(mazeDim-1)]] |  r <- [0..(mazeDim-1)] ]
@@ -157,4 +162,15 @@ zombieRight p maze = if maze !! row p !! (col p + 1) == '#' then
   p
 else
   p{ col = min mazeDim (col p + 1)}
+
+
+mazeAttrMap ::  AttrMap
+mazeAttrMap = attrMap V.defAttr
+  [
+    (attrName "player", on V.red V.brightBlack)
+  , (attrName "zombie", on V.green V.brightBlack)
+  , (attrName "treasure", on V.yellow V.brightBlack)
+  , (attrName "wall", V.withBackColor V.defAttr V.black)
+  , (attrName "path", V.withBackColor V.defAttr V.brightBlack )
+  ]
 

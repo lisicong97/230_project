@@ -10,6 +10,7 @@ import Control.Concurrent (threadDelay, forkIO)
 import Model
 import View 
 import Control 
+import Model.Maze
 import System.Environment (getArgs)
 import Text.Read (readMaybe)
 import Data.Maybe (fromMaybe)
@@ -38,7 +39,8 @@ app = App
   , appChooseCursor = const . const Nothing
   , appHandleEvent  = control 
   , appStartEvent   = return
-  , appAttrMap      = const (attrMap defAttr [])
+  -- , appAttrMap      = const (attrMap defAttr [])
+  , appAttrMap      = const Model.Maze.mazeAttrMap 
   }
 
 getRounds :: IO (Maybe Int)
@@ -50,3 +52,14 @@ getRounds = do
 
 defaultRounds :: Int
 defaultRounds = 3
+
+
+-- rlaAttrMap ::  AttrMap
+-- rlaAttrMap = attrMap V.defAttr
+--   [ 
+--     -- (attrName "start", V.defAttr)
+--     (attrName "player", V.withBackColor V.defAttr V.red)
+--   , (attrName "zombie", V.withBackColor V.defAttr V.green)
+--   , (attrName "treasure", V.withBackColor V.defAttr V.yellow)
+--   , (attrName "walls", V.withBackColor V.defAttr V.blue)
+--   ]

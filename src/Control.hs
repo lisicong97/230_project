@@ -27,17 +27,20 @@ import System.Random (randomR)
 --   _                               -> Brick.continue s -- Brick.halt s
 
 control :: PlayState -> BrickEvent n Tick -> EventM n (Next PlayState)
-control s ev = if dead s then
-    Brick.halt s
+control s ev = if (gameState s) == 0 then
+  case ev of 
+    AppEvent (Tick currentTime)     -> Brick.continue (autoMove currentTime s)
+    T.VtyEvent (V.EvKey V.KUp   _)  -> Brick.continue (move Model.Maze.up s)
+    T.VtyEvent (V.EvKey V.KDown _)  -> Brick.continue (move Model.Maze.down s)
+    T.VtyEvent (V.EvKey V.KLeft _)  -> Brick.continue (move Model.Maze.left s)
+    T.VtyEvent (V.EvKey V.KRight _) -> Brick.continue (move Model.Maze.right s)
+    T.VtyEvent (V.EvKey V.KEsc _)   -> Brick.halt s
+    _                               -> Brick.continue s -- Brick.halt s
   else
-    case ev of 
-  AppEvent (Tick currentTime)     -> Brick.continue (autoMove currentTime s)
-  T.VtyEvent (V.EvKey V.KUp   _)  -> Brick.continue (move Model.Maze.up s)
-  T.VtyEvent (V.EvKey V.KDown _)  -> Brick.continue (move Model.Maze.down s)
-  T.VtyEvent (V.EvKey V.KLeft _)  -> Brick.continue (move Model.Maze.left s)
-  T.VtyEvent (V.EvKey V.KRight _) -> Brick.continue (move Model.Maze.right s)
-  T.VtyEvent (V.EvKey V.KEsc _)   -> Brick.halt s
-  _                               -> Brick.continue s -- Brick.halt s
+    case ev of
+      T.VtyEvent (V.EvKey V.KEsc _)   -> Brick.halt s
+      _                               -> Brick.continue s -- Brick.halt s
+
 
 -- autoMove :: UTCTime -> PlayState -> PlayState 
 -- autoMove t s = if floor ( nominalDiffTimeToSeconds $ diffUTCTime t (time s)) >= 1
@@ -51,7 +54,7 @@ autoMove :: UTCTime -> PlayState -> PlayState
 autoMove t s = if floor ( nominalDiffTimeToSeconds $ diffUTCTime t (time s)) >= 1
                   then 
                     if compareMeet (playerLoc s) newZombieLocs
-                      then s { time = t, seed = seed1, zombieLocs = newZombieLocs, zombieDirects = newZombieDirects, dead = True}
+                      then s { time = t, seed = seed1, zombieLocs = newZombieLocs, zombieDirects = newZombieDirects, gameState = 1}
                     else
                       s { time = t, seed = seed1, zombieLocs = newZombieLocs, zombieDirects = newZombieDirects}
                   else s
@@ -69,9 +72,9 @@ move f s
   , treasureLocs = [loc1, (treasureLocs ps) !! 1]
   , seed = seed2
   }
-  | meetZombie ps =
+  | compareMeet (playerLoc ps) (zombieLocs ps)=
   ps {
-    dead = True
+      gameState = 1
   }
   | getLocX (playerLoc ps) == tx2 && getLocY (playerLoc ps) == ty2 =
   ps {
@@ -93,9 +96,6 @@ move f s
       tx2 = getLocX ((treasureLocs ps) !! 1)
       ty2 = getLocY ((treasureLocs ps) !! 1)
       
-
-meetZombie :: PlayState -> Bool
-meetZombie s = compareMeet (playerLoc s) (zombieLocs s)
 
 
 compareMeet :: MazeCoord -> [MazeCoord] -> Bool

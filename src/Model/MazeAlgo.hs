@@ -1,10 +1,35 @@
+-- TODO: automatically generate a maze, see brick lib: Maze, below is simple backtracking algo,
+-- still need cooperation with our code, no time to finish.
 -- import Data.Array.ST
 -- import Data.STRef
 -- import Data.Word
 -- import System.Random
 -- import Control.Monad ( forM_, when )
 -- import Control.Monad.ST
-
+-- module Maze.Core
+--   ( -- * Coordinates, directions, and walls
+--     Coord
+--   , coordRow
+--   , coordCol
+--   , Wall
+--   , wallNeighbors
+--   , wallDirection
+--   , Direction(..)
+--     -- * Mutable maze
+--   , STMaze
+--   , newSTMaze
+--   , stMazeBounds
+--   , stMazeInnerWalls
+--   , stMazeNeighborCoords
+--   , stMazeOpenCoordDir
+--   , stMazeOpenWall
+--     -- * Immutable maze
+--   , IMaze
+--   , freezeSTMaze
+--   , iMazeBounds
+--   , iMazeMove
+--   , iMazeCoords
+--   ) where
 -- -- create maze using recursive backtracking algorithm
 -- createMaze :: RandomGen g => g -> Word32 -> Word32 -> (IMaze, g)
 -- createMaze g rows cols = runST $ do

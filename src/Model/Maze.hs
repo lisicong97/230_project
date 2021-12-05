@@ -67,17 +67,17 @@ startLoction = MkMazeCoord 1 1
 drawMazeWidget :: [[Char]] -> MazeCoord -> [MazeCoord] -> [MazeCoord] -> Widget n
 drawMazeWidget maze (MkMazeCoord x y) treasureLocs zombieLocs =
     vBox [ hBox [ if (r == x) && (c == y)
-      then withAttr (attrName "player") (str "*")
+      then withAttr (attrName "player") (str "* ")
       else (
         if judgeExistThing zombieLocs r c
-          then withAttr (attrName "zombie") (str "&")
+          then withAttr (attrName "zombie") (str "& ")
           else (
             if (r == tx1) && (c == ty1) || (r == tx2) && (c == ty2)
-            then withAttr (attrName "treasure") (str "★")
+            then withAttr (attrName "treasure") (str "★ ")
             -- then withAttr (attrName "treasure") (str "$")
             else if [(maze !! r) !! c] == "#"
-                  then withAttr (attrName "wall") (str " ")
-                  else withAttr (attrName "path") (str " ")
+                  then withAttr (attrName "wall") (str "  ")
+                  else withAttr (attrName "path") (str "  ")
             )
       )
       | c <- [0..(mazeDim-1)]] |  r <- [0..(mazeDim-1)] ]

@@ -23,8 +23,7 @@ executable rla
                        Model, 
                        Model.Board,
                        Model.Score,
-                       Model.Player,
-                       Model.Maze
+                       Model.Maze,
                        Model.Zombie
 		       
   default-language:    Haskell2010

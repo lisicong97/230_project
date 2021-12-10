@@ -31,7 +31,7 @@ main = do
   seed <- getStdGen
   st <- getCurrentTime
   res <- customMain initialVty buildVty (Just chan) app (Model.init rounds seed st)
-  print (psResult res, psScore res) 
+  print () 
 
 app :: App PlayState Tick String
 app = App

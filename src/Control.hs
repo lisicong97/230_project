@@ -6,9 +6,6 @@ import qualified Brick.Types as T
 
 import Model
 import Model.Board
-import Control.Monad.IO.Class (MonadIO(liftIO))
-
-import Model.Player
 import Model.Maze
 import Model.Zombie
 import Data.Time.Clock
@@ -102,28 +99,6 @@ compareMeet :: MazeCoord -> [MazeCoord] -> Bool
 compareMeet _ [] = False
 compareMeet p (x:xs) = (getLocX p == getLocX x && getLocY p == getLocY x)
                       || compareMeet p xs
-
-
--------------------------------------------------------------------------------
-play :: XO -> PlayState -> IO (Result Board)
--------------------------------------------------------------------------------
-play xo s
-  | psTurn s == xo = put (psBoard s) xo <$> getPos xo s
-  | otherwise      = return Retry
-
-getPos :: XO -> PlayState -> IO Pos
-getPos xo s = getStrategy xo s (psPos s) (psBoard s) xo
-
-getStrategy :: XO -> PlayState -> Strategy
-getStrategy X s = plStrat (psX s)
-getStrategy O s = plStrat (psO s)
-
--------------------------------------------------------------------------------
-nextS :: PlayState -> Result Board -> EventM n (Next PlayState)
--------------------------------------------------------------------------------
-nextS s b = case next s b of
-  Right s' -> continue s'
-  Left res -> halt (s { psResult = res })
 
 
 -- -------------------------------------------------------------------------------

@@ -2,6 +2,15 @@
 
 Final Project for CSE230
 
+
+**Run**
+```
+stack build
+stack run
+```
+
+![pic](pic.png)
+
 **TEAM**
 
 | Name          | PID       |

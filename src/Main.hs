@@ -51,14 +51,3 @@ getRounds = do
 
 defaultRounds :: Int
 defaultRounds = 3
-
-
--- rlaAttrMap ::  AttrMap
--- rlaAttrMap = attrMap V.defAttr
---   [ 
---     -- (attrName "start", V.defAttr)
---     (attrName "player", V.withBackColor V.defAttr V.red)
---   , (attrName "zombie", V.withBackColor V.defAttr V.green)
---   , (attrName "treasure", V.withBackColor V.defAttr V.yellow)
---   , (attrName "walls", V.withBackColor V.defAttr V.blue)
---   ]

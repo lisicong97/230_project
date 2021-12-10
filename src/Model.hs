@@ -11,17 +11,11 @@ import Data.Time.Clock
 -------------------------------------------------------------------------------
 -- | Ticks mark passing of time: a custom event that we constantly stream
 -------------------------------------------------------------------------------
--- data Tick = Tick
 data Tick = Tick UTCTime
 
 -------------------------------------------------------------------------------
 -- | Top-level App State ------------------------------------------------------
 -------------------------------------------------------------------------------
-
-data State 
-  = Intro 
-  | Play PlayState 
-  | Outro 
   
 data PlayState = PS
   {     
@@ -61,8 +55,4 @@ init _ seed1 t = PS
         (i1, seed2) = randomR (0, length allEmptyCells - 1) seed1
         (i2, seed3) = randomR (0, length allEmptyCells - 1) seed2
         allEmptyCells = Maze.emptyCell Maze.maze0  Maze.startLoction
-
-
-isCurr :: PlayState -> Int -> Int -> Bool
-isCurr _ _ _ = True
 

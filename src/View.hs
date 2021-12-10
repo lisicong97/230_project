@@ -1,14 +1,12 @@
 module View (view) where
 
 import Brick
-import Brick.Widgets.Border (borderWithLabel, hBorder, vBorder)
+import Brick.Widgets.Border (borderWithLabel)
 import Brick.Widgets.Border.Style (unicode)
 import Text.Printf (printf)
 
 import Model
-import Model.Maze
-import Model.Zombie
-import Graphics.Vty hiding (dim)
+import Model.Maze ( maze0, drawMazeWidget )
 
 -------------------------------------------------------------------------------
 view :: PlayState -> [Widget String]
@@ -27,7 +25,7 @@ view' s =
     
 
 drawGameOverWidget :: Int -> Widget n
-drawGameOverWidget score = 
+drawGameOverWidget _ = 
   vBox [ hBox [ if (gameOverFigure !! r) !! c == '#'
                 then withAttr (attrName "wall") (str " ")
                 else if (gameOverFigure !! r) !! c == ' '

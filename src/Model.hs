@@ -39,7 +39,7 @@ data PlayState = PS
   } 
 
 init :: Int -> StdGen -> UTCTime -> PlayState
-init n seed1 t = PS 
+init _ seed1 t = PS 
   { 
     seed       = seed5
   , maze      = Maze.maze0
@@ -64,8 +64,5 @@ init n seed1 t = PS
 
 
 isCurr :: PlayState -> Int -> Int -> Bool
--- isCurr s r c = Board.pRow p == r && Board.pCol p == c
---   where 
---     p = psPos s 
 isCurr _ _ _ = True
 

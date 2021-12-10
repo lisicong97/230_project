@@ -5,11 +5,9 @@ import qualified Graphics.Vty as V
 import qualified Brick.Types as T
 
 import Model
-import Model.Board
 import Model.Maze
 import Model.Zombie
 import Data.Time.Clock
-import Data.List (tails)
 import System.Random (randomR)
 -------------------------------------------------------------------------------
 

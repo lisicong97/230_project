@@ -2,8 +2,8 @@ name:                rla
 version:             0.1.0.0
 license:             MIT
 license-file:        LICENSE
-author:              Ranjit Jhala
-maintainer:          rjhala@eng.ucsd.edu
+author:              230 TEAM 
+maintainer:          
 category:            Game
 build-type:          Simple
 extra-source-files:  README.md
@@ -21,8 +21,6 @@ executable rla
   other-modules:       View, 
                        Control,
                        Model, 
-                       Model.Board,
-                       Model.Score,
                        Model.Maze,
                        Model.Zombie
 		       
